@@ -636,11 +636,11 @@ body {
 .write-button {
   position: absolute;
 
-  top: -45px;
+  bottom: -65px;
   right: 0;
 
   border:
-    1px solid rgba(255,255,255,.12);
+    1px solid rgba(255,255,255,.14);
 
   background:
     rgba(255,255,255,.06);
@@ -655,11 +655,27 @@ body {
     "Libre Baskerville",
     serif;
 
+  font-size: 13px;
+
   cursor: pointer;
+
+  z-index: 100;
 
   transition:
     background .2s ease,
     transform .2s ease;
+}
+
+.write-button:hover {
+  background:
+    rgba(255,255,255,.12);
+}
+
+.write-button:active {
+  transform:
+    scale(.97);
+}
+
 }
 
 .write-button:hover {

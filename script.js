@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", async function () {
      ========================= */
 
   const SUPABASE_URL =
-    "PASTE_YOUR_NEW_SUPABASE_URL_HERE";
+    "‎https://ryydohuebadsgpjnpsch.supabase.co";
 
 
   const SUPABASE_KEY =
-    "PASTE_YOUR_NEW_SUPABASE_PUBLISHABLE_KEY_HERE";
+    "‎sb_publishable_9moh5wpLBUPrkNJOBpWu_g_IlLJ6d2V";
 
 
   const supabase =

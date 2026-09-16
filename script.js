@@ -168,35 +168,106 @@ document.addEventListener("DOMContentLoaded", async function () {
      RENDER
      ========================= */
 
-  function renderJournal() {
+ function renderJournal() {
 
-    if (!entries.length) {
+  if (!entries.length) {
 
-      clearPage(
-        leftDate,
-        leftTitle,
-        leftContent,
-        leftPageNumber
+    clearPage(
+      leftDate,
+      leftTitle,
+      leftContent,
+      leftPageNumber
+    );
+
+    clearPage(
+      rightDate,
+      rightTitle,
+      rightContent,
+      rightPageNumber
+    );
+
+    loading.textContent =
+      "Nothing written yet.";
+
+    loading.classList.remove("hidden");
+
+    updateControls();
+
+    return;
+  }
+
+
+  loading.classList.add("hidden");
+
+
+  /*
+    The journal behaves like a real open book.
+
+    currentIndex = entry currently visible
+    on the RIGHT page.
+
+    The previous entry stays on the LEFT.
+  */
+
+  const rightEntry =
+    entries[currentIndex];
+
+  const leftEntry =
+    currentIndex > 0
+      ? entries[currentIndex - 1]
+      : null;
+
+
+  /* LEFT PAGE */
+
+  if (leftEntry) {
+
+    leftDate.textContent =
+      formatDate(
+        leftEntry.entry_date
       );
 
-      clearPage(
-        rightDate,
-        rightTitle,
-        rightContent,
-        rightPageNumber
-      );
+    leftTitle.textContent =
+      leftEntry.title || "";
 
-      loading.textContent =
-        "Nothing written yet.";
+    leftContent.textContent =
+      leftEntry.content || "";
 
-      loading.classList.remove(
-        "hidden"
-      );
+    leftPageNumber.textContent =
+      currentIndex;
 
-      updateControls();
+  } else {
 
-      return;
-    }
+    clearPage(
+      leftDate,
+      leftTitle,
+      leftContent,
+      leftPageNumber
+    );
+
+  }
+
+
+  /* RIGHT PAGE */
+
+  rightDate.textContent =
+    formatDate(
+      rightEntry.entry_date
+    );
+
+  rightTitle.textContent =
+    rightEntry.title || "";
+
+  rightContent.textContent =
+    rightEntry.content || "";
+
+  rightPageNumber.textContent =
+    currentIndex + 1;
+
+
+  updateControls();
+
+}
 
 
     loading.classList.add(

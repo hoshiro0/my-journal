@@ -8,7 +8,6 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -22,123 +21,166 @@
 
   <div class="app">
 
-    <!-- =========================
-         JOURNAL
-         ========================= -->
+    <main class="journal-wrapper">
 
-    <main class="journal" id="journal">
+      <!-- SEARCH -->
+      <div class="search-area">
 
-      <div class="book-shadow"></div>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search your journal..."
+          autocomplete="off"
+        >
 
-      <!-- LEFT PAGE -->
+        <button
+          id="clearSearchBtn"
+          type="button"
+          aria-label="Clear search"
+        >
+          ×
+        </button>
 
-      <section class="paper-page left-page">
+      </div>
 
-        <div class="page-inner">
 
-          <div class="entry-date" id="leftDate"></div>
+      <!-- JOURNAL -->
+      <main class="journal" id="journal">
 
-          <h1 class="entry-title" id="leftTitle"></h1>
+        <div class="book-shadow"></div>
 
-          <div
-            class="entry-content"
-            id="leftContent"
-          ></div>
+
+        <!-- LEFT PAGE -->
+
+        <section class="paper-page left-page">
+
+          <div class="page-inner">
+
+            <div
+              class="entry-date"
+              id="leftDate"
+            ></div>
+
+            <h1
+              class="entry-title"
+              id="leftTitle"
+            ></h1>
+
+            <div
+              class="entry-content"
+              id="leftContent"
+            ></div>
+
+          </div>
+
+          <span
+            class="page-number"
+            id="leftPageNumber"
+          ></span>
+
+        </section>
+
+
+        <!-- RIGHT PAGE -->
+
+        <section class="paper-page right-page">
+
+          <div class="page-inner">
+
+            <div
+              class="entry-date"
+              id="rightDate"
+            ></div>
+
+            <h1
+              class="entry-title"
+              id="rightTitle"
+            ></h1>
+
+            <div
+              class="entry-content"
+              id="rightContent"
+            ></div>
+
+          </div>
+
+          <span
+            class="page-number"
+            id="rightPageNumber"
+          ></span>
+
+        </section>
+
+
+        <!-- PAGE THAT ACTUALLY FLIPS -->
+
+        <div
+          class="page-turn"
+          id="pageTurn"
+        ></div>
+
+
+        <!-- LOADING -->
+
+        <div
+          class="loading"
+          id="loading"
+        >
+          Opening the journal…
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div class="journal-controls">
+
+          <button
+            type="button"
+            id="prevBtn"
+            aria-label="Previous page"
+          >
+            ←
+          </button>
+
+          <span id="pageIndicator">
+            0 / 0
+          </span>
+
+          <button
+            type="button"
+            id="nextBtn"
+            aria-label="Next page"
+          >
+            →
+          </button>
 
         </div>
 
-        <span class="page-number" id="leftPageNumber"></span>
 
-      </section>
+        <!-- NEW ENTRY -->
 
+        <button
+          type="button"
+          class="write-button"
+          id="newEntryBtn"
+        >
+          + New Entry
+        </button>
 
-      <!-- RIGHT PAGE -->
-
-      <section class="paper-page right-page">
-
-        <div class="page-inner">
-
-          <div class="entry-date" id="rightDate"></div>
-
-          <h1 class="entry-title" id="rightTitle"></h1>
-
-          <div
-            class="entry-content"
-            id="rightContent"
-          ></div>
-
-        </div>
-
-        <span class="page-number" id="rightPageNumber"></span>
-
-      </section>
+      </main>
 
 
-      <!-- PAGE TURN -->
+      <!-- SEARCH RESULT STATUS -->
 
       <div
-        class="page-turn"
-        id="pageTurn"
+        class="search-status"
+        id="searchStatus"
       ></div>
-
-
-      <!-- EMPTY / LOADING -->
-
-      <div
-        class="loading"
-        id="loading"
-      >
-        Opening the journal…
-      </div>
-
-
-      <!-- =========================
-           CONTROLS
-           ========================= -->
-
-      <div class="journal-controls">
-
-        <button
-          type="button"
-          id="prevBtn"
-          aria-label="Previous page"
-        >
-          ←
-        </button>
-
-        <span id="pageIndicator">
-          0 / 0
-        </span>
-
-        <button
-          type="button"
-          id="nextBtn"
-          aria-label="Next page"
-        >
-          →
-        </button>
-
-      </div>
-
-
-      <!-- =========================
-           WRITE
-           ========================= -->
-
-      <button
-        type="button"
-        class="write-button"
-        id="newEntryBtn"
-      >
-        + New Entry
-      </button>
 
     </main>
 
 
-    <!-- =========================
-         EDITOR
-         ========================= -->
+    <!-- EDITOR -->
 
     <section
       class="editor hidden"
@@ -159,16 +201,20 @@
           A new page
         </p>
 
+
         <label>
           Date
+
           <input
             id="entryDate"
             type="date"
           >
         </label>
 
+
         <label>
           Title
+
           <input
             id="entryTitle"
             type="text"
@@ -176,13 +222,16 @@
           >
         </label>
 
+
         <label>
           Your thoughts
+
           <textarea
             id="entryContent"
             placeholder="Write here..."
           ></textarea>
         </label>
+
 
         <div class="editor-actions">
 
@@ -203,6 +252,7 @@
 
         </div>
 
+
         <p
           id="editorStatus"
           class="editor-status"
@@ -215,9 +265,7 @@
   </div>
 
 
-  <!-- =========================
-       SUPABASE
-       ========================= -->
+  <!-- SUPABASE -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 

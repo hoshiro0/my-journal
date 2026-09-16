@@ -21,9 +21,11 @@ document.addEventListener("DOMContentLoaded", async function () {
      ELEMENTS
      ========================= */
 
+  const journal =
+    document.getElementById("journal");
+
   const loading =
     document.getElementById("loading");
-
 
   const leftDate =
     document.getElementById("leftDate");
@@ -31,12 +33,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const leftTitle =
     document.getElementById("leftTitle");
 
-  const leftText =
-    document.getElementById("leftText");
-
-  const leftNumber =
-    document.getElementById("leftNumber");
-
+  const leftContent =
+    document.getElementById("leftContent");
 
   const rightDate =
     document.getElementById("rightDate");
@@ -44,83 +42,53 @@ document.addEventListener("DOMContentLoaded", async function () {
   const rightTitle =
     document.getElementById("rightTitle");
 
-  const rightText =
-    document.getElementById("rightText");
+  const rightContent =
+    document.getElementById("rightContent");
 
-  const rightNumber =
-    document.getElementById("rightNumber");
+  const leftPageNumber =
+    document.getElementById("leftPageNumber");
 
+  const rightPageNumber =
+    document.getElementById("rightPageNumber");
 
-  const previousBtn =
-    document.getElementById("previousBtn");
+  const pageTurn =
+    document.getElementById("pageTurn");
 
+  const prevBtn =
+    document.getElementById("prevBtn");
 
   const nextBtn =
     document.getElementById("nextBtn");
 
-
   const pageIndicator =
     document.getElementById("pageIndicator");
-
 
   const newEntryBtn =
     document.getElementById("newEntryBtn");
 
-
-  const searchBtn =
-    document.getElementById("searchBtn");
-
-
-  const editorModal =
-    document.getElementById("editorModal");
-
-
-  const searchModal =
-    document.getElementById("searchModal");
-
-
-  const closeEditorBtn =
-    document.getElementById("closeEditorBtn");
-
-
-  const closeSearchBtn =
-    document.getElementById("closeSearchBtn");
-
+  const editor =
+    document.getElementById("editor");
 
   const cancelBtn =
     document.getElementById("cancelBtn");
 
-
   const saveBtn =
     document.getElementById("saveBtn");
 
+  const deleteBtn =
+    document.getElementById("deleteBtn");
 
   const entryDate =
     document.getElementById("entryDate");
 
-
   const entryTitle =
     document.getElementById("entryTitle");
-
 
   const entryContent =
     document.getElementById("entryContent");
 
-
   const editorStatus =
     document.getElementById("editorStatus");
-
-
-  const searchInput =
-    document.getElementById("searchInput");
-
-
-  const searchResults =
-    document.getElementById("searchResults");
-
-
-  const journal =
-    document.getElementById("journal");
 
 
   /* =========================
@@ -133,35 +101,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   let editingId = null;
 
-
-  /* =========================
-     DATE
-     ========================= */
-
-  function formatDate(dateString) {
-
-    if (!dateString) {
-      return "";
-    }
-
-    const date =
-      new Date(
-        dateString + "T00:00:00"
-      );
-
-    return date.toLocaleDateString(
-      undefined,
-      {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      }
-    );
-  }
+  let isTurning = false;
 
 
   /* =========================
-     ESCAPE HTML
+     HELPERS
      ========================= */
 
   function escapeHtml(value) {
@@ -172,187 +116,170 @@ document.addEventListener("DOMContentLoaded", async function () {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "";
+    }
+
+    const date =
+      new Date(value);
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return value;
+    }
+
+    return date.toLocaleDateString(
+      undefined,
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }
+    );
+
+  }
+
+
+  function clearPage(
+    date,
+    title,
+    content,
+    pageNumber
+  ) {
+
+    date.textContent = "";
+    title.textContent = "";
+    content.textContent = "";
+    pageNumber.textContent = "";
+
   }
 
 
   /* =========================
-     DISPLAY
+     RENDER
      ========================= */
 
   function renderJournal() {
 
-    const mobile =
-      window.innerWidth <= 700;
-
-
     if (!entries.length) {
 
-      leftDate.textContent = "";
+      clearPage(
+        leftDate,
+        leftTitle,
+        leftContent,
+        leftPageNumber
+      );
 
-      leftTitle.textContent = "";
+      clearPage(
+        rightDate,
+        rightTitle,
+        rightContent,
+        rightPageNumber
+      );
 
-      leftText.innerHTML =
-        '<div class="page-empty">Nothing written yet.</div>';
+      loading.textContent =
+        "Nothing written yet.";
 
-      leftNumber.textContent = "";
+      loading.classList.remove(
+        "hidden"
+      );
 
-
-      rightDate.textContent = "";
-
-      rightTitle.textContent = "";
-
-      rightText.innerHTML = "";
-
-      rightNumber.textContent = "";
-
-
-      pageIndicator.textContent =
-        "0 / 0";
-
-
-      previousBtn.disabled = true;
-
-      nextBtn.disabled = true;
+      updateControls();
 
       return;
     }
 
 
-    if (mobile) {
-
-      const entry =
-        entries[currentIndex];
-
-
-      leftDate.textContent = "";
-
-      leftTitle.textContent = "";
-
-      leftText.innerHTML = "";
+    loading.classList.add(
+      "hidden"
+    );
 
 
-      rightDate.textContent =
-        formatDate(entry.entry_date);
+    const entry =
+      entries[currentIndex];
 
 
-      rightTitle.textContent =
-        entry.title || "";
-
-
-      rightText.textContent =
-        entry.content || "";
-
-
-      rightNumber.textContent =
-        String(currentIndex + 1)
-          .padStart(2, "0");
-
-
-      pageIndicator.textContent =
-        `${currentIndex + 1} / ${entries.length}`;
-
-
-    } else {
-
-      const left =
-        entries[currentIndex * 2];
-
-
-      const right =
-        entries[currentIndex * 2 + 1];
-
-
-      renderPage(
-        left,
-        leftDate,
-        leftTitle,
-        leftText,
-        leftNumber,
-        currentIndex * 2 + 1
+    leftDate.textContent =
+      formatDate(
+        entry.entry_date
       );
 
+    leftTitle.textContent =
+      entry.title ||
+      "";
 
-      renderPage(
-        right,
-        rightDate,
-        rightTitle,
-        rightText,
-        rightNumber,
-        currentIndex * 2 + 2
-      );
+    leftContent.textContent =
+      entry.content ||
+      "";
 
 
-      const totalSpreads =
-        Math.max(
-          1,
-          Math.ceil(entries.length / 2)
-        );
+    leftPageNumber.textContent =
+      currentIndex + 1;
 
 
-      pageIndicator.textContent =
-        `${currentIndex + 1} / ${totalSpreads}`;
+    /*
+      The right page is intentionally
+      kept as a continuation/blank page
+      for now.
+
+      This gives us the physical
+      open-journal appearance without
+      splitting your writing incorrectly.
+    */
+
+    clearPage(
+      rightDate,
+      rightTitle,
+      rightContent,
+      rightPageNumber
+    );
+
+
+    if (
+      currentIndex <
+      entries.length - 1
+    ) {
+
+      rightPageNumber.textContent =
+        currentIndex + 2;
+
     }
 
 
-    previousBtn.disabled =
-      currentIndex <= 0;
+    updateControls();
 
-
-    const maxIndex =
-      mobile
-        ? entries.length - 1
-        : Math.max(
-            0,
-            Math.ceil(entries.length / 2) - 1
-          );
-
-
-    nextBtn.disabled =
-      currentIndex >= maxIndex;
   }
 
 
-  function renderPage(
-    entry,
-    dateElement,
-    titleElement,
-    textElement,
-    numberElement,
-    pageNumber
-  ) {
+  /* =========================
+     CONTROLS
+     ========================= */
 
-    if (!entry) {
+  function updateControls() {
 
-      dateElement.textContent = "";
+    const total =
+      entries.length;
 
-      titleElement.textContent = "";
+    pageIndicator.textContent =
+      total
+        ? `${currentIndex + 1} / ${total}`
+        : "0 / 0";
 
-      textElement.innerHTML =
-        '<div class="page-empty">✦</div>';
+    prevBtn.disabled =
+      currentIndex <= 0;
 
-      numberElement.textContent =
-        String(pageNumber)
-          .padStart(2, "0");
+    nextBtn.disabled =
+      currentIndex >= total - 1;
 
-      return;
-    }
-
-
-    dateElement.textContent =
-      formatDate(entry.entry_date);
-
-
-    titleElement.textContent =
-      entry.title || "";
-
-
-    textElement.textContent =
-      entry.content || "";
-
-
-    numberElement.textContent =
-      String(pageNumber)
-        .padStart(2, "0");
   }
 
 
@@ -360,72 +287,74 @@ document.addEventListener("DOMContentLoaded", async function () {
      PAGE TURN
      ========================= */
 
-  function turnPage(direction) {
+  function turnPage(
+    direction
+  ) {
 
-    const maxIndex =
-      window.innerWidth <= 700
-        ? entries.length - 1
-        : Math.max(
-            0,
-            Math.ceil(entries.length / 2) - 1
-          );
-
-
-    if (direction === "next") {
-
-      if (currentIndex >= maxIndex) {
-        return;
-      }
-
-      journal.classList.remove("turn-prev");
-
-      void journal.offsetWidth;
-
-      journal.classList.add("turn-next");
-
-      currentIndex++;
-
-      setTimeout(
-        renderJournal,
-        90
-      );
-
-    } else {
-
-      if (currentIndex <= 0) {
-        return;
-      }
-
-      journal.classList.remove("turn-next");
-
-      void journal.offsetWidth;
-
-      journal.classList.add("turn-prev");
-
-      currentIndex--;
-
-      setTimeout(
-        renderJournal,
-        90
-      );
+    if (isTurning) {
+      return;
     }
+
+    if (!entries.length) {
+      return;
+    }
+
+
+    const nextIndex =
+      direction === "next"
+        ? currentIndex + 1
+        : currentIndex - 1;
+
+
+    if (
+      nextIndex < 0 ||
+      nextIndex >= entries.length
+    ) {
+      return;
+    }
+
+
+    isTurning = true;
+
+
+    pageTurn.className =
+      "page-turn " +
+      (
+        direction === "next"
+          ? "turn-next"
+          : "turn-prev"
+      );
 
 
     setTimeout(
       function () {
 
-        journal.classList.remove(
-          "turn-next",
-          "turn-prev"
-        );
+        currentIndex =
+          nextIndex;
+
+        renderJournal();
 
       },
-      500
+      350
     );
+
+
+    setTimeout(
+      function () {
+
+        pageTurn.className =
+          "page-turn";
+
+        isTurning = false;
+
+      },
+      750
+    );
+
   }
 
 
-  previousBtn.addEventListener(
+  prevBtn.addEventListener(
     "click",
     function () {
       turnPage("prev");
@@ -442,7 +371,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   /* =========================
-     SWIPE
+     KEYBOARD
+     ========================= */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "ArrowRight"
+      ) {
+        turnPage("next");
+      }
+
+      if (
+        event.key === "ArrowLeft"
+      ) {
+        turnPage("prev");
+      }
+
+    }
+  );
+
+
+  /* =========================
+     MOBILE SWIPE
      ========================= */
 
   let touchStartX = 0;
@@ -471,24 +424,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       touchEndX =
         event.changedTouches[0].screenX;
 
+      const difference =
+        touchStartX -
+        touchEndX;
 
-      const distance =
-        touchStartX - touchEndX;
 
-
-      if (Math.abs(distance) < 45) {
+      if (
+        Math.abs(difference) < 50
+      ) {
         return;
       }
 
 
-      if (distance > 0) {
-
+      if (difference > 0) {
         turnPage("next");
-
       } else {
-
         turnPage("prev");
-
       }
 
     },
@@ -496,6 +447,98 @@ document.addEventListener("DOMContentLoaded", async function () {
       passive: true
     }
   );
+
+
+  /* =========================
+     LOAD ENTRIES
+     ========================= */
+
+  async function loadEntries() {
+
+    loading.textContent =
+      "Opening the journal…";
+
+    loading.classList.remove(
+      "hidden"
+    );
+
+
+    try {
+
+      const result =
+        await Promise.race([
+
+          supabase
+            .from("journal_entries")
+            .select("*")
+            .order(
+              "entry_date",
+              {
+                ascending: true
+              }
+            )
+            .order(
+              "created_at",
+              {
+                ascending: true
+              }
+            ),
+
+          new Promise(
+            function (_, reject) {
+
+              setTimeout(
+                function () {
+
+                  reject(
+                    new Error(
+                      "Supabase did not respond within 10 seconds."
+                    )
+                  );
+
+                },
+                10000
+              );
+
+            }
+          )
+
+        ]);
+
+
+      if (result.error) {
+        throw result.error;
+      }
+
+
+      entries =
+        result.data || [];
+
+
+      currentIndex = 0;
+
+
+      renderJournal();
+
+
+    } catch (error) {
+
+      console.error(
+        "Journal loading error:",
+        error
+      );
+
+
+      loading.textContent =
+        "Could not open the journal: " +
+        (
+          error?.message ||
+          String(error)
+        );
+
+    }
+
+  }
 
 
   /* =========================
@@ -511,28 +554,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         .toISOString()
         .split("T")[0];
 
-
     entryTitle.value = "";
 
     entryContent.value = "";
 
     editorStatus.textContent = "";
 
-    saveBtn.textContent =
-      "Save Entry";
-
-
-    editorModal.classList.remove(
+    deleteBtn.classList.add(
       "hidden"
     );
 
+    saveBtn.textContent =
+      "Save Entry";
 
-    setTimeout(
-      function () {
-        entryContent.focus();
-      },
-      100
+    editor.classList.remove(
+      "hidden"
     );
+
+    entryTitle.focus();
+
   }
 
 
@@ -542,18 +582,19 @@ document.addEventListener("DOMContentLoaded", async function () {
   );
 
 
+  /* =========================
+     CLOSE EDITOR
+     ========================= */
+
   function closeEditor() {
 
-    editorModal.classList.add(
+    editor.classList.add(
       "hidden"
     );
+
+    editingId = null;
+
   }
-
-
-  closeEditorBtn.addEventListener(
-    "click",
-    closeEditor
-  );
 
 
   cancelBtn.addEventListener(
@@ -563,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   /* =========================
-     SAVE ENTRY
+     SAVE
      ========================= */
 
   saveBtn.addEventListener(
@@ -573,10 +614,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const date =
         entryDate.value;
 
-
       const title =
         entryTitle.value.trim();
-
 
       const content =
         entryContent.value.trim();
@@ -588,6 +627,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           "Please choose a date.";
 
         return;
+
       }
 
 
@@ -597,371 +637,208 @@ document.addEventListener("DOMContentLoaded", async function () {
           "Write something first.";
 
         return;
+
       }
 
 
       saveBtn.disabled = true;
 
       editorStatus.textContent =
-        "Saving...";
+        "Saving…";
 
 
-      let result;
+      try {
+
+        let result;
 
 
-      if (editingId) {
+        if (editingId) {
 
-        result =
-          await supabase
-            .from("journal_entries")
-            .update({
-              entry_date: date,
-              title: title,
-              content: content,
-              updated_at:
-                new Date().toISOString()
-            })
-            .eq("id", editingId);
+          result =
+            await supabase
+              .from("journal_entries")
+              .update({
+                entry_date: date,
+                title: title,
+                content: content,
+                updated_at:
+                  new Date().toISOString()
+              })
+              .eq(
+                "id",
+                editingId
+              );
 
-      } else {
+        } else {
 
-        result =
-          await supabase
-            .from("journal_entries")
-            .insert({
-              entry_date: date,
-              title: title,
-              content: content
-            });
-      }
+          result =
+            await supabase
+              .from("journal_entries")
+              .insert({
+                entry_date: date,
+                title: title,
+                content: content
+              });
 
-
-      saveBtn.disabled = false;
+        }
 
 
-      if (result.error) {
+        if (result.error) {
+          throw result.error;
+        }
+
+
+        editorStatus.textContent =
+          "Saved.";
+
+        await loadEntries();
+
+
+        setTimeout(
+          function () {
+            closeEditor();
+          },
+          300
+        );
+
+
+      } catch (error) {
 
         editorStatus.textContent =
           "Could not save: " +
-          result.error.message;
+          (
+            error?.message ||
+            String(error)
+          );
 
+      } finally {
+
+        saveBtn.disabled =
+          false;
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     EDIT CURRENT ENTRY
+     ========================= */
+
+  journal.addEventListener(
+    "dblclick",
+    function () {
+
+      if (!entries.length) {
         return;
       }
+
+
+      const entry =
+        entries[currentIndex];
+
+
+      editingId =
+        entry.id;
+
+
+      entryDate.value =
+        entry.entry_date || "";
+
+
+      entryTitle.value =
+        entry.title || "";
+
+
+      entryContent.value =
+        entry.content || "";
 
 
       editorStatus.textContent =
-        "Saved.";
+        "";
 
 
-      await loadEntries();
-
-
-      setTimeout(
-        closeEditor,
-        400
+      deleteBtn.classList.remove(
+        "hidden"
       );
+
+
+      saveBtn.textContent =
+        "Save Changes";
+
+
+      editor.classList.remove(
+        "hidden"
+      );
+
     }
   );
 
 
   /* =========================
-     SEARCH
+     DELETE
      ========================= */
 
-  searchBtn.addEventListener(
+  deleteBtn.addEventListener(
     "click",
-    function () {
+    async function () {
 
-      searchModal.classList.remove(
-        "hidden"
-      );
-
-      searchInput.value = "";
-
-      searchResults.innerHTML = "";
-
-      setTimeout(
-        function () {
-          searchInput.focus();
-        },
-        100
-      );
-    }
-  );
-
-
-  closeSearchBtn.addEventListener(
-    "click",
-    function () {
-
-      searchModal.classList.add(
-        "hidden"
-      );
-
-    }
-  );
-
-
-  searchInput.addEventListener(
-    "input",
-    function () {
-
-      const query =
-        searchInput.value
-          .trim()
-          .toLowerCase();
-
-
-      if (!query) {
-
-        searchResults.innerHTML = "";
-
+      if (!editingId) {
         return;
       }
 
 
-      const matches =
-        entries.filter(
-          function (entry) {
-
-            return (
-              (entry.title || "")
-                .toLowerCase()
-                .includes(query)
-
-              ||
-
-              (entry.content || "")
-                .toLowerCase()
-                .includes(query)
-
-              ||
-
-              (entry.entry_date || "")
-                .includes(query)
-            );
-          }
+      const confirmed =
+        window.confirm(
+          "Delete this journal entry permanently?"
         );
 
 
-      if (!matches.length) {
-
-        searchResults.innerHTML =
-          "<p>No entries found.</p>";
-
+      if (!confirmed) {
         return;
       }
 
 
-      searchResults.innerHTML = "";
+      deleteBtn.disabled = true;
 
 
-      matches.forEach(
-        function (entry) {
+      try {
 
-          const button =
-            document.createElement(
-              "button"
+        const result =
+          await supabase
+            .from("journal_entries")
+            .delete()
+            .eq(
+              "id",
+              editingId
             );
 
 
-          button.type = "button";
-
-          button.className =
-            "search-result";
-
-
-          const preview =
-            (entry.content || "")
-              .slice(0, 120);
-
-
-          button.innerHTML = `
-
-            <div class="search-result-title">
-              ${escapeHtml(
-                entry.title ||
-                "Untitled entry"
-              )}
-            </div>
-
-            <div class="search-result-date">
-              ${escapeHtml(
-                formatDate(
-                  entry.entry_date
-                )
-              )}
-            </div>
-
-            <div class="search-result-preview">
-              ${escapeHtml(
-                preview
-              )}${preview.length >= 120 ? "..." : ""}
-            </div>
-
-          `;
-
-
-          button.addEventListener(
-            "click",
-            function () {
-
-              const index =
-                entries.findIndex(
-                  function (item) {
-                    return item.id === entry.id;
-                  }
-                );
-
-
-              if (index !== -1) {
-
-                if (
-                  window.innerWidth <= 700
-                ) {
-
-                  currentIndex =
-                    index;
-
-                } else {
-
-                  currentIndex =
-                    Math.floor(
-                      index / 2
-                    );
-                }
-
-
-                renderJournal();
-
-                searchModal.classList.add(
-                  "hidden"
-                );
-              }
-
-            }
-          );
-
-
-          searchResults.appendChild(
-            button
-          );
-
+        if (result.error) {
+          throw result.error;
         }
-      );
-    }
-  );
 
 
-  /* =========================
-     LOAD ENTRIES
-     ========================= */
+        closeEditor();
 
-    async function loadEntries() {
-
-    loading.classList.remove("hidden");
-    loading.textContent = "Opening the journal…";
-
-    try {
-
-      if (!supabase) {
-        throw new Error("Supabase client is not available.");
-      }
-
-      const query = supabase
-        .from("journal_entries")
-        .select("*")
-        .order(
-  "created_at",
-  {
-    ascending: true
-  }
-)
-
-      const timeout = new Promise((_, reject) => {
-        setTimeout(
-          () => {
-            reject(
-              new Error(
-                "Supabase did not respond within 10 seconds."
-              )
-            );
-          },
-          10000
-        );
-      });
-
-      const {
-        data,
-        error
-      } = await Promise.race([
-        query,
-        timeout
-      ]);
-
-      if (error) {
-        throw error;
-      }
-
-      entries =
-        data || [];
-
-      currentIndex = 0;
-
-      renderJournal();
-
-      loading.classList.add(
-        "hidden"
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Journal loading error:",
-        error
-      );
-
-      loading.classList.remove(
-        "hidden"
-      );
-
-      loading.textContent =
-        "Could not open the journal: " +
-        (
-          error?.message ||
-          String(error)
-        );
-
-    }
-
-  }
-
-  /* =========================
-     WINDOW RESIZE
-     ========================= */
-
-  let previousMobile =
-    window.innerWidth <= 700;
+        await loadEntries();
 
 
-  window.addEventListener(
-    "resize",
-    function () {
+      } catch (error) {
 
-      const nowMobile =
-        window.innerWidth <= 700;
+        editorStatus.textContent =
+          "Could not delete: " +
+          (
+            error?.message ||
+            String(error)
+          );
 
+      } finally {
 
-      if (
-        nowMobile !== previousMobile
-      ) {
+        deleteBtn.disabled =
+          false;
 
-        currentIndex = 0;
-
-        previousMobile =
-          nowMobile;
-
-        renderJournal();
       }
 
     }

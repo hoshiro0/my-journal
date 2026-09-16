@@ -4,44 +4,47 @@
 
 
 :root {
-  --paper: #f1e7d2;
-  --paper-deep: #e8dac0;
 
-  --ink: #40372c;
-  --muted: #756957;
+  --outside: #91836d;
 
-  --rule: rgba(91, 75, 55, 0.14);
-  --edge: rgba(89, 68, 44, 0.23);
+  --paper: #efe3ca;
 
-  --outside: #d3c2a4;
+  --paper-light: #f4ead5;
+
+  --ink: #463b2d;
+
+  --muted: #806f58;
+
+  --line: rgba(91, 73, 50, .14);
+
+  --edge: rgba(72, 53, 33, .25);
+
 }
 
 
-html {
-  scroll-behavior: smooth;
-}
-
-
+html,
 body {
   margin: 0;
-  min-height: 100vh;
 
-  color: var(--ink);
+  width: 100%;
+  min-height: 100%;
 
   background:
     radial-gradient(
-      circle at 15% 10%,
-      rgba(255,255,255,.13),
-      transparent 28%
+      circle at 20% 10%,
+      rgba(255,255,255,.12),
+      transparent 30%
     ),
 
     radial-gradient(
-      circle at 85% 80%,
-      rgba(75,55,35,.08),
+      circle at 80% 90%,
+      rgba(42,29,17,.18),
       transparent 35%
     ),
 
     var(--outside);
+
+  color: var(--ink);
 
   font-family:
     "Libre Baskerville",
@@ -50,344 +53,705 @@ body {
 }
 
 
-.site {
-  width: min(1040px, calc(100% - 28px));
-
-  margin:
-    34px auto
-    56px;
+body {
+  min-height: 100vh;
 }
 
 
 /* =========================
-   TOP BAR
+   APP
    ========================= */
 
-.topbar {
+.app {
+  min-height: 100vh;
+
   display: flex;
 
-  justify-content: space-between;
+  justify-content: center;
+
   align-items: center;
 
-  gap: 20px;
-
-  margin-bottom: 17px;
-
-  color: #f1e7d2;
-}
-
-
-.brand {
-  font-size: 11px;
-
-  letter-spacing: .17em;
-
-  text-transform: uppercase;
-
-  opacity: .84;
-}
-
-
-.tagline {
-  font-size: 10px;
-
-  opacity: .62;
-
-  text-align: right;
+  padding: 45px 25px;
 }
 
 
 /* =========================
-   JOURNAL PAPER
+   JOURNAL
    ========================= */
 
-.journal-page {
+.journal-area {
+  width: min(1200px, 100%);
+}
+
+
+.journal {
+
   position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 1.52 / 1;
+
+  display: flex;
+
+  perspective: 1800px;
+
+  filter:
+    drop-shadow(
+      0 28px 35px
+      rgba(37,25,13,.30)
+    );
+}
+
+
+/* =========================
+   PAGES
+   ========================= */
+
+.page {
+
+  position: relative;
+
+  width: 50%;
+  height: 100%;
 
   overflow: hidden;
 
   background:
 
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(118,91,58,.045),
-      transparent 18%
-    ),
-
-    radial-gradient(
-      circle at 87% 74%,
-      rgba(118,91,58,.04),
-      transparent 21%
-    ),
-
-    linear-gradient(
-      90deg,
-      rgba(91,65,38,.055),
-      transparent 7%,
-      transparent 93%,
-      rgba(91,65,38,.055)
-    ),
-
     repeating-linear-gradient(
       to bottom,
 
       transparent 0,
-      transparent 31px,
+      transparent 34px,
 
-      var(--rule) 32px,
+      var(--line) 35px,
 
-      transparent 33px
+      transparent 36px
+    ),
+
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(108,82,48,.05),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 80% 75%,
+      rgba(108,82,48,.04),
+      transparent 25%
     ),
 
     linear-gradient(
-      135deg,
-      var(--paper),
-      var(--paper-deep)
+      120deg,
+      var(--paper-light),
+      var(--paper)
     );
 
-  border:
+  border-top:
+    1px solid var(--edge);
+
+  border-bottom:
+    1px solid var(--edge);
+}
+
+
+.page-left {
+
+  border-left:
     1px solid var(--edge);
 
   border-radius:
-    4px 7px 5px 3px;
+    5px 0 0 5px;
 
   box-shadow:
-
-    0 25px 55px
-    rgba(44,31,17,.22),
-
-    0 3px 8px
-    rgba(44,31,17,.13);
+    inset -15px 0 25px
+    rgba(65,45,25,.07);
 }
 
 
-/* Inner border */
+.page-right {
 
-.journal-page::before {
-  content: "";
+  border-right:
+    1px solid var(--edge);
 
-  position: absolute;
-
-  inset: 12px;
-
-  border:
-    1px solid
-    rgba(104,83,58,.15);
-
-  border-radius: 3px;
-
-  pointer-events: none;
-}
-
-
-/* Old notebook margin */
-
-.journal-page::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  left: 25px;
-
-  width: 1px;
-
-  background:
-    rgba(117,83,53,.10);
+  border-radius:
+    0 5px 5px 0;
 
   box-shadow:
-    2px 0
-    rgba(255,255,255,.15);
-
-  pointer-events: none;
-}
-
-
-.paper-inner {
-  position: relative;
-
-  z-index: 1;
-
-  padding:
-    57px
-    clamp(30px, 7vw, 82px)
-    70px;
+    inset 15px 0 25px
+    rgba(65,45,25,.07);
 }
 
 
 /* =========================
-   ENTRY HEADER
+   BOOK SPINE
    ========================= */
 
-.entry-header {
-  text-align: center;
+.book-spine {
 
-  margin-bottom: 37px;
+  position: absolute;
+
+  z-index: 10;
+
+  left: 50%;
+
+  top: 0;
+
+  width: 18px;
+
+  height: 100%;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+
+      rgba(56,39,22,.18),
+
+      rgba(255,255,255,.12),
+
+      rgba(56,39,22,.20)
+    );
+
+  pointer-events: none;
 }
 
 
-.date {
-  color: var(--muted);
+/* =========================
+   PAGE CONTENT
+   ========================= */
 
-  font-size: 9px;
+.page-content {
 
-  letter-spacing: .2em;
+  position: relative;
 
-  text-transform: uppercase;
+  height: 100%;
+
+  padding:
+    8% 9% 12%;
+
+  overflow: hidden;
+}
+
+
+.page-date {
+
+  min-height: 18px;
 
   margin-bottom: 10px;
+
+  color: var(--muted);
+
+  font-family:
+    "Libre Baskerville",
+    serif;
+
+  font-size:
+    clamp(8px, .8vw, 11px);
+
+  letter-spacing:
+    .14em;
+
+  text-transform:
+    uppercase;
 }
 
 
-h1 {
-  margin: 0;
+.page-title {
 
-  color: #493e31;
+  margin:
+    0 0 15px;
 
   font-family:
     "Caveat",
     cursive;
 
   font-size:
-    clamp(42px, 6vw, 60px);
+    clamp(30px, 3.2vw, 48px);
 
   font-weight: 500;
 
   line-height: 1;
+
+  color: #514332;
 }
 
 
-.ornament {
-  margin-top: 12px;
+.page-text {
 
-  color: #907a60;
+  white-space: pre-wrap;
 
-  font-size: 13px;
-
-  letter-spacing: .45em;
-}
-
-
-/* =========================
-   JOURNAL TEXT
-   ========================= */
-
-.entry {
-  max-width: 770px;
-
-  margin: 0 auto;
+  overflow-wrap: anywhere;
 
   font-family:
     "Caveat",
     cursive;
 
   font-size:
-    clamp(22px, 2.45vw, 27px);
+    clamp(17px, 1.75vw, 25px);
 
   line-height: 1.43;
 
-  letter-spacing: .006em;
+  color: var(--ink);
 }
 
 
-.entry p {
-  margin:
-    0 0 25px;
+.page-number {
 
-  text-indent: 1.1em;
+  position: absolute;
+
+  bottom: 22px;
+
+  color:
+    rgba(91,73,50,.48);
+
+  font-size: 9px;
+
+  letter-spacing: .12em;
 }
 
 
-.entry p:first-child {
-  text-indent: 0;
+.page-left .page-number {
+  left: 9%;
+}
+
+
+.page-right .page-number {
+  right: 9%;
 }
 
 
 /* =========================
-   SIGNATURE
+   EMPTY PAGE
    ========================= */
 
-.signature {
-  margin-top: 34px;
+.page-empty {
 
-  text-align: right;
+  display: flex;
 
-  color: #5e5142;
+  align-items: center;
+
+  justify-content: center;
+
+  height: 100%;
+
+  color:
+    rgba(91,73,50,.45);
 
   font-family:
     "Caveat",
     cursive;
 
-  font-size: 31px;
+  font-size: 25px;
 }
 
 
 /* =========================
-   FOOTER
+   CONTROLS
    ========================= */
 
-.entry-footer {
-  margin-top: 42px;
+.journal-controls {
 
-  text-align: center;
-
-  color:
-    rgba(91,77,59,.48);
-
-  font-size: 8px;
-
-  letter-spacing: .16em;
-
-  text-transform: uppercase;
-}
-
-
-/* =========================
-   BUTTON
-   ========================= */
-
-.actions {
   display: flex;
 
   justify-content: center;
 
-  margin-top: 17px;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 18px;
+
+  color: #eee3cf;
+
+  font-size: 11px;
 }
 
 
-.actions button {
+.journal-controls button {
+
+  width: 35px;
+  height: 30px;
+
   border:
     1px solid
-    rgba(243,234,216,.34);
+    rgba(245,235,215,.3);
 
   background:
-    rgba(45,32,20,.19);
+    rgba(46,32,19,.20);
 
-  color: #f3ead8;
+  color: #f1e7d2;
 
-  border-radius: 999px;
+  border-radius: 50%;
 
-  padding:
-    9px 15px;
+  cursor: pointer;
 
-  font-family: inherit;
+  transition: .2s;
+}
+
+
+.journal-controls button:hover {
+
+  background:
+    rgba(46,32,19,.38);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.journal-controls button:disabled {
+
+  opacity: .3;
+
+  cursor: default;
+
+  transform: none;
+}
+
+
+/* =========================
+   SMALL CONTROLS
+   ========================= */
+
+.small-controls {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 10px;
+}
+
+
+.small-controls button {
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    rgba(243,232,211,.72);
+
+  font-family:
+    "Libre Baskerville",
+    serif;
 
   font-size: 10px;
 
   cursor: pointer;
 
-  transition: .2s ease;
+  padding: 7px 10px;
 }
 
 
-.actions button:hover {
-  background:
-    rgba(45,32,20,.32);
+.small-controls button:hover {
+  color: white;
+}
 
-  transform:
-    translateY(-1px);
+
+/* =========================
+   MODALS
+   ========================= */
+
+.modal {
+
+  position: fixed;
+
+  z-index: 100;
+
+  inset: 0;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(28,19,11,.58);
+
+  backdrop-filter:
+    blur(5px);
+}
+
+
+.hidden {
+  display: none !important;
+}
+
+
+.editor,
+.search-panel {
+
+  position: relative;
+
+  width: min(600px, 100%);
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  padding: 35px;
+
+  background:
+
+    repeating-linear-gradient(
+      to bottom,
+
+      transparent 0,
+      transparent 34px,
+
+      rgba(91,73,50,.10) 35px,
+
+      transparent 36px
+    ),
+
+    var(--paper-light);
+
+  border:
+    1px solid var(--edge);
+
+  box-shadow:
+    0 25px 60px
+    rgba(0,0,0,.35);
+}
+
+
+.close-btn {
+
+  position: absolute;
+
+  top: 10px;
+  right: 14px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--ink);
+
+  font-size: 26px;
+
+  cursor: pointer;
+}
+
+
+.editor-label {
+
+  margin-bottom: 17px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+
+  letter-spacing: .18em;
+}
+
+
+.editor input,
+.editor textarea,
+.search-panel input {
+
+  width: 100%;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    rgba(91,73,50,.25);
+
+  outline: none;
+
+  background:
+    rgba(255,255,255,.12);
+
+  color: var(--ink);
+
+  font-family:
+    "Caveat",
+    cursive;
+
+  font-size: 23px;
+
+  padding:
+    10px 8px;
+
+  margin-bottom: 13px;
+}
+
+
+.editor textarea {
+
+  min-height: 300px;
+
+  resize: vertical;
+
+  line-height: 1.45;
+}
+
+
+.editor-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+
+.editor-actions button {
+
+  border:
+    1px solid
+    rgba(75,55,35,.25);
+
+  background:
+    rgba(75,55,35,.08);
+
+  color: var(--ink);
+
+  padding:
+    9px 15px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+}
+
+
+.editor-actions button:last-child {
+
+  background:
+    rgba(75,55,35,.18);
+}
+
+
+.editor-status {
+
+  min-height: 18px;
+
+  margin-top: 10px;
+
+  font-size: 11px;
+
+  color: var(--muted);
+}
+
+
+/* =========================
+   SEARCH
+   ========================= */
+
+.search-results {
+
+  margin-top: 18px;
+
+  display: grid;
+
+  gap: 8px;
+}
+
+
+.search-result {
+
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid
+    rgba(75,55,35,.15);
+
+  background:
+    rgba(255,255,255,.13);
+
+  text-align: left;
+
+  color: var(--ink);
+
+  cursor: pointer;
+}
+
+
+.search-result-title {
+
+  font-family:
+    "Caveat",
+    cursive;
+
+  font-size: 21px;
+}
+
+
+.search-result-date {
+
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  color: var(--muted);
+}
+
+
+.search-result-preview {
+
+  margin-top: 6px;
+
+  font-family:
+    "Caveat",
+    cursive;
+
+  font-size: 16px;
+
+  opacity: .78;
+}
+
+
+/* =========================
+   LOADING
+   ========================= */
+
+.loading {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 200;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    var(--outside);
+
+  color:
+    #f1e7d2;
+
+  font-family:
+    "Caveat",
+    cursive;
+
+  font-size: 24px;
+
+  transition: opacity .3s;
+}
+
+
+.loading.hidden {
+  display: none;
 }
 
 
@@ -395,101 +759,179 @@ h1 {
    PHONE
    ========================= */
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
 
-  .site {
-    width:
-      calc(100% - 12px);
+  .app {
 
-    margin:
-      12px auto
-      28px;
+    padding:
+      20px 10px 30px;
+
+    align-items:
+      flex-start;
   }
 
 
-  .tagline {
+  .journal {
+
+    aspect-ratio:
+      0.72 / 1;
+
+    display: block;
+  }
+
+
+  .book-spine {
     display: none;
   }
 
 
-  .topbar {
-    padding: 0 4px;
+  .page {
 
-    margin-bottom: 10px;
+    width: 100%;
+
+    height: 100%;
+
+    border:
+      1px solid var(--edge);
+
+    border-radius: 5px;
+
+    box-shadow:
+      0 20px 35px
+      rgba(38,25,14,.25);
   }
 
 
-  .journal-page::after {
-    left: 13px;
+  .page-left {
+    display: none;
   }
 
 
-  .journal-page::before {
-    inset: 8px;
-  }
+  .page-content {
 
-
-  .paper-inner {
     padding:
-      43px
-      23px
-      52px
-      31px;
+      10% 10% 15%;
   }
 
 
-  .entry-header {
-    margin-bottom: 28px;
+  .page-date {
+
+    font-size: 8px;
+
+    margin-bottom: 13px;
   }
 
 
-  h1 {
-    font-size: 46px;
+  .page-title {
+
+    font-size: 38px;
+
+    margin-bottom: 18px;
   }
 
 
-  .entry {
+  .page-text {
+
     font-size: 23px;
 
-    line-height: 1.44;
+    line-height: 1.45;
   }
 
 
-  .entry p {
-    margin-bottom: 22px;
+  .page-number {
+
+    bottom: 18px;
+  }
+
+
+  .page-right .page-number {
+
+    right: 10%;
+  }
+
+
+  .journal-controls {
+
+    margin-top: 14px;
+  }
+
+
+  .small-controls {
+    margin-top: 8px;
+  }
+
+
+  .editor,
+  .search-panel {
+
+    padding:
+      30px 22px;
+
+    max-height: 92vh;
   }
 
 }
 
 
 /* =========================
-   PRINT
+   PAGE TURN ANIMATION
    ========================= */
 
-@media print {
+.turn-next {
 
-  body {
-    background: white;
+  animation:
+    turnNext .42s ease;
+}
+
+
+.turn-prev {
+
+  animation:
+    turnPrev .42s ease;
+}
+
+
+@keyframes turnNext {
+
+  0% {
+    transform:
+      perspective(1000px)
+      rotateY(0deg);
   }
 
-
-  .site {
-    width: 100%;
-
-    margin: 0;
+  45% {
+    transform:
+      perspective(1000px)
+      rotateY(-7deg);
   }
 
-
-  .topbar,
-  .actions {
-    display: none;
+  100% {
+    transform:
+      perspective(1000px)
+      rotateY(0deg);
   }
 
+}
 
-  .journal-page {
-    border: 0;
 
-    box-shadow: none;
+@keyframes turnPrev {
+
+  0% {
+    transform:
+      perspective(1000px)
+      rotateY(0deg);
+  }
+
+  45% {
+    transform:
+      perspective(1000px)
+      rotateY(7deg);
+  }
+
+  100% {
+    transform:
+      perspective(1000px)
+      rotateY(0deg);
   }
 
 }

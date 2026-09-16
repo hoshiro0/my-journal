@@ -1,137 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <title>My Journal</title>
 
-  <title>nuance</title>
+  <link rel="stylesheet" href="style.css">
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet"
   >
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
 </head>
-
 
 <body>
 
   <div class="app">
 
+    <!-- =========================
+         JOURNAL
+         ========================= -->
 
-    <!-- JOURNAL -->
+    <main class="journal" id="journal">
 
-    <main class="journal-area">
+      <div class="book-shadow"></div>
+
+      <!-- LEFT PAGE -->
+
+      <section class="paper-page left-page">
+
+        <div class="page-inner">
+
+          <div class="entry-date" id="leftDate"></div>
+
+          <h1 class="entry-title" id="leftTitle"></h1>
+
+          <div
+            class="entry-content"
+            id="leftContent"
+          ></div>
+
+        </div>
+
+        <span class="page-number" id="leftPageNumber"></span>
+
+      </section>
+
+
+      <!-- RIGHT PAGE -->
+
+      <section class="paper-page right-page">
+
+        <div class="page-inner">
+
+          <div class="entry-date" id="rightDate"></div>
+
+          <h1 class="entry-title" id="rightTitle"></h1>
+
+          <div
+            class="entry-content"
+            id="rightContent"
+          ></div>
+
+        </div>
+
+        <span class="page-number" id="rightPageNumber"></span>
+
+      </section>
+
+
+      <!-- PAGE TURN -->
 
       <div
-        class="journal"
-        id="journal"
+        class="page-turn"
+        id="pageTurn"
+      ></div>
+
+
+      <!-- EMPTY / LOADING -->
+
+      <div
+        class="loading"
+        id="loading"
       >
-
-        <div class="book-spine"></div>
-
-
-        <!-- LEFT PAGE -->
-
-        <section
-          class="page page-left"
-          id="leftPage"
-        >
-
-          <div class="page-content">
-
-            <div class="page-date" id="leftDate"></div>
-
-            <h1
-              class="page-title"
-              id="leftTitle"
-            ></h1>
-
-            <div
-              class="page-text"
-              id="leftText"
-            ></div>
-
-          </div>
-
-          <div
-            class="page-number"
-            id="leftNumber"
-          ></div>
-
-        </section>
-
-
-        <!-- RIGHT PAGE -->
-
-        <section
-          class="page page-right"
-          id="rightPage"
-        >
-
-          <div class="page-content">
-
-            <div class="page-date" id="rightDate"></div>
-
-            <h1
-              class="page-title"
-              id="rightTitle"
-            ></h1>
-
-            <div
-              class="page-text"
-              id="rightText"
-            ></div>
-
-          </div>
-
-          <div
-            class="page-number"
-            id="rightNumber"
-          ></div>
-
-        </section>
-
+        Opening the journal…
       </div>
 
 
-      <!-- CONTROLS -->
+      <!-- =========================
+           CONTROLS
+           ========================= -->
 
       <div class="journal-controls">
 
         <button
           type="button"
-          id="previousBtn"
+          id="prevBtn"
+          aria-label="Previous page"
         >
           ←
         </button>
 
         <span id="pageIndicator">
-          1 / 1
+          0 / 0
         </span>
 
         <button
           type="button"
           id="nextBtn"
+          aria-label="Next page"
         >
           →
         </button>
@@ -139,73 +121,70 @@
       </div>
 
 
-      <div class="small-controls">
+      <!-- =========================
+           WRITE
+           ========================= -->
 
-        <button
-          type="button"
-          id="newEntryBtn"
-        >
-          + New Entry
-        </button>
-
-        <button
-          type="button"
-          id="searchBtn"
-        >
-          Search
-        </button>
-
-      </div>
+      <button
+        type="button"
+        class="write-button"
+        id="newEntryBtn"
+      >
+        + New Entry
+      </button>
 
     </main>
 
 
-    <!-- ENTRY EDITOR -->
+    <!-- =========================
+         EDITOR
+         ========================= -->
 
-    <div
-      class="modal hidden"
-      id="editorModal"
+    <section
+      class="editor hidden"
+      id="editor"
     >
 
-      <div class="editor">
+      <div class="editor-paper">
 
         <button
           type="button"
-          class="close-btn"
-          id="closeEditorBtn"
+          class="close-editor"
+          id="cancelBtn"
         >
           ×
         </button>
 
-        <div class="editor-label">
-          NEW ENTRY
-        </div>
+        <p class="editor-heading">
+          A new page
+        </p>
 
-        <input
-          id="entryDate"
-          type="date"
-        >
+        <label>
+          Date
+          <input
+            id="entryDate"
+            type="date"
+          >
+        </label>
 
-        <input
-          id="entryTitle"
-          type="text"
-          maxlength="100"
-          placeholder="Title (optional)"
-        >
+        <label>
+          Title
+          <input
+            id="entryTitle"
+            type="text"
+            placeholder="Give this page a name..."
+          >
+        </label>
 
-        <textarea
-          id="entryContent"
-          placeholder="Write here..."
-        ></textarea>
+        <label>
+          Your thoughts
+          <textarea
+            id="entryContent"
+            placeholder="Write here..."
+          ></textarea>
+        </label>
 
         <div class="editor-actions">
-
-          <button
-            type="button"
-            id="cancelBtn"
-          >
-            Cancel
-          </button>
 
           <button
             type="button"
@@ -214,72 +193,35 @@
             Save Entry
           </button>
 
+          <button
+            type="button"
+            id="deleteBtn"
+            class="danger hidden"
+          >
+            Delete Entry
+          </button>
+
         </div>
 
-        <div
-          class="editor-status"
+        <p
           id="editorStatus"
-        ></div>
+          class="editor-status"
+        ></p>
 
       </div>
 
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div
-      class="modal hidden"
-      id="searchModal"
-    >
-
-      <div class="search-panel">
-
-        <button
-          type="button"
-          class="close-btn"
-          id="closeSearchBtn"
-        >
-          ×
-        </button>
-
-        <div class="editor-label">
-          FIND AN ENTRY
-        </div>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search your journal..."
-        >
-
-        <div
-          id="searchResults"
-          class="search-results"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="loading"
-      id="loading"
-    >
-      opening the journal...
-    </div>
-
+    </section>
 
   </div>
 
 
-  <!-- SUPABASE -->
+  <!-- =========================
+       SUPABASE
+       ========================= -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script src="script.js"></script>
 
 </body>
-
 </html>

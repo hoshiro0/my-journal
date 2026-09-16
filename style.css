@@ -2,47 +2,46 @@
   box-sizing: border-box;
 }
 
-
 :root {
+  --paper: #f1e6cd;
+  --paper-light: #f7eedc;
+  --paper-dark: #d9c8a6;
 
-  --outside: #91836d;
+  --ink: #34291e;
+  --muted: #756653;
 
-  --paper: #efe3ca;
+  --cover: #3a2d25;
+  --cover-light: #4c3b30;
 
-  --paper-light: #f4ead5;
-
-  --ink: #463b2d;
-
-  --muted: #806f58;
-
-  --line: rgba(91, 73, 50, .14);
-
-  --edge: rgba(72, 53, 33, .25);
-
+  --line: rgba(67, 50, 32, 0.13);
 }
 
+
+/* =========================
+   PAGE
+   ========================= */
 
 html,
 body {
   margin: 0;
-
-  width: 100%;
   min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
 
   background:
     radial-gradient(
-      circle at 20% 10%,
-      rgba(255,255,255,.12),
+      circle at 20% 15%,
+      rgba(255,255,255,.04),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255,255,255,.025),
       transparent 30%
     ),
-
-    radial-gradient(
-      circle at 80% 90%,
-      rgba(42,29,17,.18),
-      transparent 35%
-    ),
-
-    var(--outside);
+    #17120e;
 
   color: var(--ink);
 
@@ -50,11 +49,6 @@ body {
     "Libre Baskerville",
     Georgia,
     serif;
-}
-
-
-body {
-  min-height: 100vh;
 }
 
 
@@ -66,286 +60,337 @@ body {
   min-height: 100vh;
 
   display: flex;
-
+  align-items: center;
   justify-content: center;
 
-  align-items: center;
-
-  padding: 45px 25px;
+  padding: 50px 25px 100px;
 }
 
 
 /* =========================
-   JOURNAL
+   JOURNAL BODY
    ========================= */
-
-.journal-area {
-  width: min(1200px, 100%);
-}
-
 
 .journal {
-
   position: relative;
 
-  width: 100%;
+  width: min(1200px, 94vw);
 
-  aspect-ratio: 1.52 / 1;
+  aspect-ratio: 1.55 / 1;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 
-  perspective: 1800px;
-
-  filter:
-    drop-shadow(
-      0 28px 35px
-      rgba(37,25,13,.30)
-    );
-}
-
-
-/* =========================
-   PAGES
-   ========================= */
-
-.page {
-
-  position: relative;
-
-  width: 50%;
-  height: 100%;
-
-  overflow: hidden;
+  padding: 20px;
 
   background:
-
-    repeating-linear-gradient(
-      to bottom,
-
-      transparent 0,
-      transparent 34px,
-
-      var(--line) 35px,
-
-      transparent 36px
-    ),
-
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(108,82,48,.05),
-      transparent 25%
-    ),
-
-    radial-gradient(
-      circle at 80% 75%,
-      rgba(108,82,48,.04),
-      transparent 25%
-    ),
-
     linear-gradient(
-      120deg,
-      var(--paper-light),
-      var(--paper)
+      135deg,
+      var(--cover-light),
+      var(--cover)
     );
 
-  border-top:
-    1px solid var(--edge);
-
-  border-bottom:
-    1px solid var(--edge);
-}
-
-
-.page-left {
-
-  border-left:
-    1px solid var(--edge);
-
-  border-radius:
-    5px 0 0 5px;
+  border-radius: 12px;
 
   box-shadow:
-    inset -15px 0 25px
-    rgba(65,45,25,.07);
-}
-
-
-.page-right {
-
-  border-right:
-    1px solid var(--edge);
-
-  border-radius:
-    0 5px 5px 0;
-
-  box-shadow:
-    inset 15px 0 25px
-    rgba(65,45,25,.07);
+    0 35px 80px rgba(0,0,0,.55),
+    inset 0 0 0 2px rgba(255,255,255,.035);
 }
 
 
 /* =========================
-   BOOK SPINE
+   BOOK CENTER
    ========================= */
 
-.book-spine {
+.journal::before {
+  content: "";
 
   position: absolute;
 
-  z-index: 10;
+  top: 20px;
+  bottom: 20px;
 
   left: 50%;
 
-  top: 0;
+  width: 3px;
 
-  width: 18px;
-
-  height: 100%;
-
-  transform:
-    translateX(-50%);
+  transform: translateX(-50%);
 
   background:
     linear-gradient(
-      90deg,
-
-      rgba(56,39,22,.18),
-
-      rgba(255,255,255,.12),
-
-      rgba(56,39,22,.20)
+      to bottom,
+      transparent,
+      rgba(42,29,19,.4) 10%,
+      rgba(42,29,19,.55) 50%,
+      rgba(42,29,19,.4) 90%,
+      transparent
     );
+
+  z-index: 30;
 
   pointer-events: none;
 }
 
 
 /* =========================
-   PAGE CONTENT
+   PAPER
    ========================= */
 
-.page-content {
-
+.paper-page {
   position: relative;
 
-  height: 100%;
-
-  padding:
-    8% 9% 12%;
+  min-width: 0;
+  min-height: 0;
 
   overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(255,255,255,.13),
+      transparent 30%
+    ),
+    var(--paper);
+
+  box-shadow:
+    inset 0 0 28px rgba(70,48,25,.10);
+
+  transition:
+    transform .45s ease,
+    opacity .35s ease;
+}
+
+.left-page {
+  border-radius: 7px 0 0 7px;
+}
+
+.right-page {
+  border-radius: 0 7px 7px 0;
 }
 
 
-.page-date {
+/* subtle paper grain */
 
-  min-height: 18px;
+.paper-page::after {
+  content: "";
 
-  margin-bottom: 10px;
+  position: absolute;
+  inset: 0;
 
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 4px,
+      rgba(60,45,30,.018) 5px
+    );
+}
+
+
+/* =========================
+   PAGE INNER
+   ========================= */
+
+.page-inner {
+  position: relative;
+
+  z-index: 2;
+
+  height: 100%;
+
+  padding: 55px 58px;
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(60,45,30,.22)
+    transparent;
+}
+
+.page-inner::-webkit-scrollbar {
+  width: 5px;
+}
+
+.page-inner::-webkit-scrollbar-thumb {
+  background: rgba(60,45,30,.22);
+
+  border-radius: 10px;
+}
+
+
+/* =========================
+   HANDWRITING
+   ========================= */
+
+.entry-date,
+.entry-title,
+.entry-content {
+  font-family:
+    "Caveat",
+    cursive;
+}
+
+.entry-date {
   color: var(--muted);
+
+  font-size: 20px;
+
+  margin-bottom: 12px;
+
+  opacity: .85;
+}
+
+.entry-title {
+  margin: 0 0 24px;
+
+  font-size: clamp(30px, 3vw, 44px);
+
+  font-weight: 600;
+
+  line-height: 1.1;
+}
+
+.entry-content {
+  font-size: clamp(18px, 1.55vw, 23px);
+
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================
+   PAGE NUMBER
+   ========================= */
+
+.page-number {
+  position: absolute;
+
+  bottom: 20px;
 
   font-family:
     "Libre Baskerville",
     serif;
 
-  font-size:
-    clamp(8px, .8vw, 11px);
+  font-size: 11px;
 
-  letter-spacing:
-    .14em;
+  color: rgba(70,50,30,.45);
 
-  text-transform:
-    uppercase;
+  z-index: 3;
 }
 
-
-.page-title {
-
-  margin:
-    0 0 15px;
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size:
-    clamp(30px, 3.2vw, 48px);
-
-  font-weight: 500;
-
-  line-height: 1;
-
-  color: #514332;
+.left-page .page-number {
+  left: 28px;
 }
 
-
-.page-text {
-
-  white-space: pre-wrap;
-
-  overflow-wrap: anywhere;
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size:
-    clamp(17px, 1.75vw, 25px);
-
-  line-height: 1.43;
-
-  color: var(--ink);
-}
-
-
-.page-number {
-
-  position: absolute;
-
-  bottom: 22px;
-
-  color:
-    rgba(91,73,50,.48);
-
-  font-size: 9px;
-
-  letter-spacing: .12em;
-}
-
-
-.page-left .page-number {
-  left: 9%;
-}
-
-
-.page-right .page-number {
-  right: 9%;
+.right-page .page-number {
+  right: 28px;
 }
 
 
 /* =========================
-   EMPTY PAGE
+   PAGE TURN
    ========================= */
 
-.page-empty {
+.page-turn {
+  position: absolute;
 
-  display: flex;
+  top: 20px;
+  bottom: 20px;
 
-  align-items: center;
+  left: 50%;
 
-  justify-content: center;
+  width: calc(50% - 20px);
 
-  height: 100%;
+  background:
+    linear-gradient(
+      to right,
+      rgba(70,50,30,.12),
+      var(--paper) 10%,
+      var(--paper-light) 90%,
+      rgba(70,50,30,.08)
+    );
 
-  color:
-    rgba(91,73,50,.45);
+  transform-origin: left center;
 
-  font-family:
-    "Caveat",
-    cursive;
+  transform:
+    perspective(1800px)
+    rotateY(0deg);
 
-  font-size: 25px;
+  opacity: 0;
+
+  z-index: 50;
+
+  pointer-events: none;
+
+  box-shadow:
+    -10px 0 25px rgba(0,0,0,.08);
+}
+
+.page-turn.turn-next {
+  animation:
+    pageNext .7s ease-in-out forwards;
+}
+
+.page-turn.turn-prev {
+  left: 20px;
+
+  transform-origin: right center;
+
+  animation:
+    pagePrev .7s ease-in-out forwards;
+}
+
+
+@keyframes pageNext {
+
+  0% {
+    transform:
+      perspective(1800px)
+      rotateY(0deg);
+
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      perspective(1800px)
+      rotateY(-180deg);
+
+    opacity: 1;
+  }
+}
+
+
+@keyframes pagePrev {
+
+  0% {
+    transform:
+      perspective(1800px)
+      rotateY(0deg);
+
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      perspective(1800px)
+      rotateY(180deg);
+
+    opacity: 1;
+  }
 }
 
 
@@ -354,365 +399,110 @@ body {
    ========================= */
 
 .journal-controls {
+  position: absolute;
+
+  bottom: -65px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
 
   display: flex;
 
-  justify-content: center;
-
   align-items: center;
 
-  gap: 18px;
+  gap: 16px;
 
-  margin-top: 18px;
-
-  color: #eee3cf;
-
-  font-size: 11px;
+  z-index: 100;
 }
 
-
 .journal-controls button {
-
-  width: 35px;
-  height: 30px;
-
-  border:
-    1px solid
-    rgba(245,235,215,.3);
-
-  background:
-    rgba(46,32,19,.20);
-
-  color: #f1e7d2;
+  width: 42px;
+  height: 42px;
 
   border-radius: 50%;
 
-  cursor: pointer;
-
-  transition: .2s;
-}
-
-
-.journal-controls button:hover {
+  border: 1px solid rgba(255,255,255,.14);
 
   background:
-    rgba(46,32,19,.38);
+    rgba(255,255,255,.06);
 
-  transform:
-    translateY(-1px);
+  color: #eee6d7;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
+.journal-controls button:hover {
+  background:
+    rgba(255,255,255,.12);
+}
+
+.journal-controls button:active {
+  transform: scale(.92);
+}
 
 .journal-controls button:disabled {
-
-  opacity: .3;
+  opacity: .25;
 
   cursor: default;
+}
 
-  transform: none;
+#pageIndicator {
+  min-width: 60px;
+
+  text-align: center;
+
+  color: rgba(255,255,255,.55);
+
+  font-size: 13px;
 }
 
 
 /* =========================
-   SMALL CONTROLS
+   WRITE BUTTON
    ========================= */
 
-.small-controls {
+.write-button {
+  position: absolute;
 
-  display: flex;
+  top: -45px;
+  right: 0;
 
-  justify-content: center;
-
-  gap: 10px;
-
-  margin-top: 10px;
-}
-
-
-.small-controls button {
-
-  border: 0;
+  border: 1px solid rgba(255,255,255,.12);
 
   background:
-    transparent;
+    rgba(255,255,255,.06);
 
-  color:
-    rgba(243,232,211,.72);
+  color: #eee6d7;
+
+  padding: 10px 17px;
+
+  border-radius: 999px;
 
   font-family:
     "Libre Baskerville",
     serif;
 
-  font-size: 10px;
-
   cursor: pointer;
 
-  padding: 7px 10px;
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
-
-.small-controls button:hover {
-  color: white;
-}
-
-
-/* =========================
-   MODALS
-   ========================= */
-
-.modal {
-
-  position: fixed;
-
-  z-index: 100;
-
-  inset: 0;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  padding: 20px;
-
-  background:
-    rgba(28,19,11,.58);
-
-  backdrop-filter:
-    blur(5px);
-}
-
-
-.hidden {
-  display: none !important;
-}
-
-
-.editor,
-.search-panel {
-
-  position: relative;
-
-  width: min(600px, 100%);
-
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  padding: 35px;
-
-  background:
-
-    repeating-linear-gradient(
-      to bottom,
-
-      transparent 0,
-      transparent 34px,
-
-      rgba(91,73,50,.10) 35px,
-
-      transparent 36px
-    ),
-
-    var(--paper-light);
-
-  border:
-    1px solid var(--edge);
-
-  box-shadow:
-    0 25px 60px
-    rgba(0,0,0,.35);
-}
-
-
-.close-btn {
-
-  position: absolute;
-
-  top: 10px;
-  right: 14px;
-
-  border: 0;
-
-  background: transparent;
-
-  color: var(--ink);
-
-  font-size: 26px;
-
-  cursor: pointer;
-}
-
-
-.editor-label {
-
-  margin-bottom: 17px;
-
-  color: var(--muted);
-
-  font-size: 9px;
-
-  letter-spacing: .18em;
-}
-
-
-.editor input,
-.editor textarea,
-.search-panel input {
-
-  width: 100%;
-
-  border: 0;
-
-  border-bottom:
-    1px solid
-    rgba(91,73,50,.25);
-
-  outline: none;
-
+.write-button:hover {
   background:
     rgba(255,255,255,.12);
-
-  color: var(--ink);
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size: 23px;
-
-  padding:
-    10px 8px;
-
-  margin-bottom: 13px;
 }
 
-
-.editor textarea {
-
-  min-height: 300px;
-
-  resize: vertical;
-
-  line-height: 1.45;
-}
-
-
-.editor-actions {
-
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 10px;
-}
-
-
-.editor-actions button {
-
-  border:
-    1px solid
-    rgba(75,55,35,.25);
-
-  background:
-    rgba(75,55,35,.08);
-
-  color: var(--ink);
-
-  padding:
-    9px 15px;
-
-  border-radius: 20px;
-
-  cursor: pointer;
-}
-
-
-.editor-actions button:last-child {
-
-  background:
-    rgba(75,55,35,.18);
-}
-
-
-.editor-status {
-
-  min-height: 18px;
-
-  margin-top: 10px;
-
-  font-size: 11px;
-
-  color: var(--muted);
-}
-
-
-/* =========================
-   SEARCH
-   ========================= */
-
-.search-results {
-
-  margin-top: 18px;
-
-  display: grid;
-
-  gap: 8px;
-}
-
-
-.search-result {
-
-  width: 100%;
-
-  padding: 12px;
-
-  border: 1px solid
-    rgba(75,55,35,.15);
-
-  background:
-    rgba(255,255,255,.13);
-
-  text-align: left;
-
-  color: var(--ink);
-
-  cursor: pointer;
-}
-
-
-.search-result-title {
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size: 21px;
-}
-
-
-.search-result-date {
-
-  margin-top: 3px;
-
-  font-size: 9px;
-
-  color: var(--muted);
-}
-
-
-.search-result-preview {
-
-  margin-top: 6px;
-
-  font-family:
-    "Caveat",
-    cursive;
-
-  font-size: 16px;
-
-  opacity: .78;
+.write-button:active {
+  transform: scale(.97);
 }
 
 
@@ -721,34 +511,30 @@ body {
    ========================= */
 
 .loading {
+  position: absolute;
 
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 200;
+  inset: 20px;
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   background:
-    var(--outside);
+    var(--paper);
 
-  color:
-    #f1e7d2;
+  border-radius: 7px;
+
+  z-index: 80;
 
   font-family:
     "Caveat",
     cursive;
 
-  font-size: 24px;
+  font-size: 28px;
 
-  transition: opacity .3s;
+  color: var(--ink);
 }
-
 
 .loading.hidden {
   display: none;
@@ -756,182 +542,282 @@ body {
 
 
 /* =========================
-   PHONE
+   EDITOR
    ========================= */
 
-@media (max-width: 700px) {
+.editor {
+  position: fixed;
 
-  .app {
+  inset: 0;
 
-    padding:
-      20px 10px 30px;
+  z-index: 500;
 
-    align-items:
-      flex-start;
-  }
+  display: flex;
 
+  align-items: center;
+  justify-content: center;
 
-  .journal {
+  padding: 25px;
 
-    aspect-ratio:
-      0.72 / 1;
+  background:
+    rgba(20,15,11,.78);
 
-    display: block;
-  }
+  backdrop-filter:
+    blur(7px);
+}
 
+.editor.hidden {
+  display: none;
+}
 
-  .book-spine {
-    display: none;
-  }
+.editor-paper {
+  position: relative;
 
+  width: min(800px, 100%);
 
-  .page {
+  max-height: 90vh;
 
-    width: 100%;
+  overflow-y: auto;
 
-    height: 100%;
+  padding: 55px;
 
-    border:
-      1px solid var(--edge);
+  background:
+    var(--paper);
 
-    border-radius: 5px;
+  border-radius: 7px;
 
-    box-shadow:
-      0 20px 35px
-      rgba(38,25,14,.25);
-  }
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.55);
+}
 
+.editor-heading {
+  margin: 0 0 30px;
 
-  .page-left {
-    display: none;
-  }
+  font-family:
+    "Caveat",
+    cursive;
 
+  font-size: 38px;
+}
 
-  .page-content {
+.editor-paper label {
+  display: block;
 
-    padding:
-      10% 10% 15%;
-  }
+  margin-top: 20px;
 
+  font-size: 13px;
 
-  .page-date {
+  color: var(--muted);
+}
 
-    font-size: 8px;
+.editor-paper input,
+.editor-paper textarea {
+  display: block;
 
-    margin-bottom: 13px;
-  }
+  width: 100%;
 
+  margin-top: 7px;
 
-  .page-title {
+  padding: 11px 4px;
 
-    font-size: 38px;
+  border: 0;
 
-    margin-bottom: 18px;
-  }
+  border-bottom: 1px solid var(--line);
 
+  outline: none;
 
-  .page-text {
+  background: transparent;
 
-    font-size: 23px;
+  color: var(--ink);
 
-    line-height: 1.45;
-  }
+  font-family:
+    "Caveat",
+    cursive;
 
+  font-size: 22px;
+}
 
-  .page-number {
+.editor-paper textarea {
+  min-height: 350px;
 
-    bottom: 18px;
-  }
+  resize: vertical;
 
+  line-height: 1.65;
+}
 
-  .page-right .page-number {
+.close-editor {
+  position: absolute;
 
-    right: 10%;
-  }
+  top: 18px;
+  right: 20px;
 
+  border: 0;
 
-  .journal-controls {
+  background: transparent;
 
-    margin-top: 14px;
-  }
+  font-size: 28px;
 
+  color: var(--muted);
 
-  .small-controls {
-    margin-top: 8px;
-  }
+  cursor: pointer;
+}
 
+.editor-actions {
+  display: flex;
 
-  .editor,
-  .search-panel {
+  gap: 10px;
 
-    padding:
-      30px 22px;
+  margin-top: 25px;
+}
 
-    max-height: 92vh;
-  }
+.editor-actions button {
+  padding: 11px 17px;
 
+  border: 0;
+
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  font-family:
+    "Libre Baskerville",
+    serif;
+
+  background: var(--cover);
+
+  color: white;
+}
+
+.editor-actions .danger {
+  background: #8d4038;
+}
+
+.editor-status {
+  margin-top: 15px;
+
+  color: var(--muted);
+
+  font-size: 13px;
 }
 
 
 /* =========================
-   PAGE TURN ANIMATION
+   MOBILE
    ========================= */
 
-.turn-next {
+@media (max-width: 800px) {
 
-  animation:
-    turnNext .42s ease;
+  .app {
+    padding:
+      35px
+      12px
+      100px;
+  }
+
+  .journal {
+    width: 100%;
+
+    aspect-ratio: auto;
+
+    min-height: 78vh;
+
+    display: block;
+
+    padding: 10px;
+  }
+
+  .journal::before {
+    display: none;
+  }
+
+  .paper-page {
+    min-height: 78vh;
+
+    border-radius: 6px !important;
+  }
+
+  .left-page {
+    display: none;
+  }
+
+  .page-inner {
+    padding:
+      42px
+      30px
+      55px;
+  }
+
+  .entry-title {
+    font-size: 34px;
+  }
+
+  .entry-content {
+    font-size: 20px;
+
+    line-height: 1.7;
+  }
+
+  .page-turn {
+    display: none;
+  }
+
+  .journal-controls {
+    bottom: -62px;
+  }
+
+  .write-button {
+    top: -45px;
+
+    right: 0;
+  }
+
+  .editor-paper {
+    padding:
+      45px
+      25px
+      30px;
+  }
 }
 
 
-.turn-prev {
+@media (max-width: 480px) {
 
-  animation:
-    turnPrev .42s ease;
-}
-
-
-@keyframes turnNext {
-
-  0% {
-    transform:
-      perspective(1000px)
-      rotateY(0deg);
+  .app {
+    padding:
+      25px
+      8px
+      90px;
   }
 
-  45% {
-    transform:
-      perspective(1000px)
-      rotateY(-7deg);
+  .journal {
+    min-height: 82vh;
   }
 
-  100% {
-    transform:
-      perspective(1000px)
-      rotateY(0deg);
+  .paper-page {
+    min-height: 82vh;
   }
 
-}
-
-
-@keyframes turnPrev {
-
-  0% {
-    transform:
-      perspective(1000px)
-      rotateY(0deg);
+  .page-inner {
+    padding:
+      35px
+      23px
+      50px;
   }
 
-  45% {
-    transform:
-      perspective(1000px)
-      rotateY(7deg);
+  .entry-date {
+    font-size: 18px;
   }
 
-  100% {
-    transform:
-      perspective(1000px)
-      rotateY(0deg);
+  .entry-title {
+    font-size: 30px;
   }
 
+  .entry-content {
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .write-button {
+    right: 8px;
+  }
 }

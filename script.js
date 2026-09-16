@@ -270,66 +270,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 }
 
 
-    loading.classList.add(
-      "hidden"
-    );
-
-
-    const entry =
-      entries[currentIndex];
-
-
-    leftDate.textContent =
-      formatDate(
-        entry.entry_date
-      );
-
-    leftTitle.textContent =
-      entry.title ||
-      "";
-
-    leftContent.textContent =
-      entry.content ||
-      "";
-
-
-    leftPageNumber.textContent =
-      currentIndex + 1;
-
-
-    /*
-      The right page is intentionally
-      kept as a continuation/blank page
-      for now.
-
-      This gives us the physical
-      open-journal appearance without
-      splitting your writing incorrectly.
-    */
-
-    clearPage(
-      rightDate,
-      rightTitle,
-      rightContent,
-      rightPageNumber
-    );
-
-
-    if (
-      currentIndex <
-      entries.length - 1
-    ) {
-
-      rightPageNumber.textContent =
-        currentIndex + 2;
-
-    }
-
-
-    updateControls();
-
-  }
-
+    function renderJournal() {
+}
 
   /* =========================
      CONTROLS

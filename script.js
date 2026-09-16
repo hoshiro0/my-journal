@@ -163,12 +163,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   }
 
-
   /* =========================
-     RENDER
-     ========================= */
+   RENDER
+   ========================= */
 
- function renderJournal() {
+function renderJournal() {
 
   if (!entries.length) {
 
@@ -200,15 +199,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   loading.classList.add("hidden");
 
 
-  /*
-    The journal behaves like a real open book.
-
-    currentIndex = entry currently visible
-    on the RIGHT page.
-
-    The previous entry stays on the LEFT.
-  */
-
   const rightEntry =
     entries[currentIndex];
 
@@ -218,7 +208,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       : null;
 
 
-  /* LEFT PAGE */
+  /* =========================
+     LEFT PAGE
+     ========================= */
 
   if (leftEntry) {
 
@@ -248,7 +240,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
 
-  /* RIGHT PAGE */
+  /* =========================
+     RIGHT PAGE
+     ========================= */
 
   rightDate.textContent =
     formatDate(
@@ -269,10 +263,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 }
 
-
-    function renderJournal() {
-}
-
+  
   /* =========================
      CONTROLS
      ========================= */

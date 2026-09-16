@@ -872,17 +872,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         .from("journal_entries")
         .select("*")
         .order(
-          "entry_date",
-          {
-            ascending: true
-          }
-        )
-        .order(
-          "created_at",
-          {
-            ascending: true
-          }
-        );
+  "created_at",
+  {
+    ascending: true
+  }
+)
 
       const timeout = new Promise((_, reject) => {
         setTimeout(

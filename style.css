@@ -190,7 +190,7 @@ body {
     0 35px 80px rgba(0,0,0,.55),
     inset 0 0 0 2px rgba(255,255,255,.035);
 
-  overflow: hidden;
+  overflow: visible;
 
   perspective: 1800px;
 
@@ -636,14 +636,13 @@ body {
 .write-button {
   position: absolute;
 
-  bottom: -65px;
+  top: -48px;
   right: 0;
 
-  border:
-    1px solid rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.14);
 
   background:
-    rgba(255,255,255,.06);
+    rgba(255,255,255,.07);
 
   color: #eee6d7;
 
@@ -659,11 +658,22 @@ body {
 
   cursor: pointer;
 
-  z-index: 100;
+  z-index: 120;
+
+  white-space: nowrap;
 
   transition:
     background .2s ease,
     transform .2s ease;
+}
+
+.write-button:hover {
+  background:
+    rgba(255,255,255,.13);
+}
+
+.write-button:active {
+  transform: scale(.97);
 }
 
 .write-button:hover {
@@ -970,12 +980,6 @@ body {
 
   .journal-controls {
     bottom: -62px;
-  }
-
-  .write-button {
-    top: -55px;
-
-    right: 0;
   }
 
   .search-status {

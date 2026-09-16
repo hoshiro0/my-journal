@@ -857,13 +857,18 @@ document.addEventListener("DOMContentLoaded", async function () {
      LOAD ENTRIES
      ========================= */
 
-  async function loadEntries() {
+    async function loadEntries() {
 
-    const {
-      data,
-      error
-    } =
-      await supabase
+    loading.classList.remove("hidden");
+    loading.textContent = "Opening the journal…";
+
+    try {
+
+      if (!supabase) {
+        throw new Error("Supabase client is not available.");
+      }
+
+      const query = supabase
         .from("journal_entries")
         .select("*")
         .order(
@@ -879,33 +884,63 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
         );
 
+      const timeout = new Promise((_, reject) => {
+        setTimeout(
+          () => {
+            reject(
+              new Error(
+                "Supabase did not respond within 10 seconds."
+              )
+            );
+          },
+          10000
+        );
+      });
 
-    if (error) {
+      const {
+        data,
+        error
+      } = await Promise.race([
+        query,
+        timeout
+      ]);
 
-      console.error(error);
+      if (error) {
+        throw error;
+      }
+
+      entries =
+        data || [];
+
+      currentIndex = 0;
+
+      renderJournal();
+
+      loading.classList.add(
+        "hidden"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Journal loading error:",
+        error
+      );
+
+      loading.classList.remove(
+        "hidden"
+      );
 
       loading.textContent =
         "Could not open the journal: " +
-        error.message;
+        (
+          error?.message ||
+          String(error)
+        );
 
-      return;
     }
 
-
-    entries =
-      data || [];
-
-
-    currentIndex = 0;
-
-    renderJournal();
-
-
-    loading.classList.add(
-      "hidden"
-    );
   }
-
 
   /* =========================
      WINDOW RESIZE

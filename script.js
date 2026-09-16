@@ -1,17 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-
   /* =========================
      SUPABASE
      ========================= */
 
   const SUPABASE_URL =
-    "‎https://ryydohuebadsgpjnpsch.supabase.co";
-
+    "https://ryydohuebadsgpjnpsch.supabase.co";
 
   const SUPABASE_KEY =
-    "‎sb_publishable_9moh5wpLBUPrkNJOBpWu_g_IlLJ6d2V";
-
+    "sb_publishable_9moh5wpLBUPrkNJOBpWu_g_IlLJ6d2V";
 
   const supabase =
     window.supabase.createClient(

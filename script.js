@@ -16,6 +16,158 @@ document.addEventListener("DOMContentLoaded", async function () {
       SUPABASE_KEY
     );
 
+  // =========================
+// OWNER AUTHENTICATION
+// =========================
+
+// Replace this with the email of your Supabase Auth user.
+const OWNER_EMAIL = "tadoyjewel71@gmail.com";
+
+let ownerSession = null;
+
+const ownerLoginBtn =
+  document.getElementById("ownerLoginBtn");
+
+const ownerLogoutBtn =
+  document.getElementById("ownerLogoutBtn");
+
+const ownerLoginPanel =
+  document.getElementById("ownerLoginPanel");
+
+const closeOwnerLoginBtn =
+  document.getElementById("closeOwnerLoginBtn");
+
+const ownerEmailInput =
+  document.getElementById("ownerEmail");
+
+const ownerPasswordInput =
+  document.getElementById("ownerPassword");
+
+const ownerSignInBtn =
+  document.getElementById("ownerSignInBtn");
+
+const ownerLoginStatus =
+  document.getElementById("ownerLoginStatus");
+
+
+function isOwner() {
+  return (
+    !!ownerSession?.user?.email &&
+    ownerSession.user.email.toLowerCase() ===
+      OWNER_EMAIL.toLowerCase()
+  );
+}
+
+
+function updateOwnerUI() {
+  const allowed = isOwner();
+
+  newEntryBtn.classList.toggle(
+    "hidden",
+    !allowed
+  );
+
+  ownerLoginBtn.classList.toggle(
+    "hidden",
+    allowed
+  );
+
+  ownerLogoutBtn.classList.toggle(
+    "hidden",
+    !allowed
+  );
+}
+
+
+ownerLoginBtn.addEventListener("click", () => {
+  ownerLoginStatus.textContent = "";
+  ownerLoginPanel.classList.remove("hidden");
+});
+
+
+closeOwnerLoginBtn.addEventListener("click", () => {
+  ownerLoginPanel.classList.add("hidden");
+});
+
+
+ownerLoginPanel.addEventListener("click", event => {
+  if (event.target === ownerLoginPanel) {
+    ownerLoginPanel.classList.add("hidden");
+  }
+});
+
+
+ownerSignInBtn.addEventListener("click", async () => {
+  const email = ownerEmailInput.value.trim();
+  const password = ownerPasswordInput.value;
+
+  if (!email || !password) {
+    ownerLoginStatus.textContent =
+      "Enter your email and password.";
+    return;
+  }
+
+  if (
+    email.toLowerCase() !==
+    OWNER_EMAIL.toLowerCase()
+  ) {
+    ownerLoginStatus.textContent =
+      "That account is not authorized to edit this journal.";
+    return;
+  }
+
+  ownerSignInBtn.disabled = true;
+  ownerLoginStatus.textContent = "Signing in…";
+
+  try {
+    const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    ownerSession = data.session;
+
+    updateOwnerUI();
+
+    ownerLoginPanel.classList.add("hidden");
+    ownerPasswordInput.value = "";
+
+  } catch (error) {
+    ownerLoginStatus.textContent =
+      "Could not sign in: " +
+      (error?.message || String(error));
+
+  } finally {
+    ownerSignInBtn.disabled = false;
+  }
+});
+
+
+ownerLogoutBtn.addEventListener("click", async () => {
+  await supabase.auth.signOut();
+
+  ownerSession = null;
+
+  updateOwnerUI();
+});
+
+
+supabase.auth.getSession().then(({ data }) => {
+  ownerSession = data.session;
+  updateOwnerUI();
+});
+
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  ownerSession = session;
+  updateOwnerUI();
+});
+
 
   /* =========================
      ELEMENTS
@@ -1098,6 +1250,10 @@ document.addEventListener("DOMContentLoaded", async function () {
      ========================= */
 
   function openNewEntry() {
+    if (!isOwner()) {
+  alert("Only the journal owner can add entries.");
+  return;
+}
 
     editingId = null;
 
@@ -1169,6 +1325,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   saveBtn.addEventListener(
     "click",
     async function () {
+      if (!isOwner()) {
+  editorStatus.textContent =
+    "Only the journal owner can save entries.";
+  return;
+}
 
       const date =
         entryDate.value;
@@ -1304,6 +1465,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   journal.addEventListener(
     "dblclick",
     function () {
+      if (!isOwner()) return;
 
       /*
         Don't try to edit the
@@ -1366,6 +1528,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   deleteBtn.addEventListener(
     "click",
     async function () {
+      if (!isOwner()) {
+  editorStatus.textContent =
+    "Only the journal owner can delete entries.";
+  return;
+}
 
       if (!editingId) {
         return;

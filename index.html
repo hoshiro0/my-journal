@@ -157,15 +157,35 @@
         </div>
 
 
-        <!-- NEW ENTRY -->
+        <!-- OWNER CONTROLS -->
 
-        <button
-          type="button"
-          class="write-button"
-          id="newEntryBtn"
-        >
-          + New Entry
-        </button>
+<div class="owner-controls">
+
+  <button
+    type="button"
+    class="owner-login-button"
+    id="ownerLoginBtn"
+  >
+    Owner Login
+  </button>
+
+  <button
+    type="button"
+    class="write-button hidden"
+    id="newEntryBtn"
+  >
+    + New Entry
+  </button>
+
+  <button
+    type="button"
+    class="owner-login-button hidden"
+    id="ownerLogoutBtn"
+  >
+    Log Out
+  </button>
+
+</div>
 
       </main>
 
@@ -179,7 +199,70 @@
 
     </main>
 
+<!-- OWNER LOGIN -->
 
+<section
+  class="owner-login hidden"
+  id="ownerLoginPanel"
+  aria-label="Owner login"
+>
+  <div class="owner-login-paper">
+
+    <button
+      type="button"
+      class="close-editor"
+      id="closeOwnerLoginBtn"
+      aria-label="Close login"
+    >
+      ×
+    </button>
+
+    <p class="editor-heading">
+      A private little key
+    </p>
+
+    <label>
+      Owner email
+
+      <input
+        id="ownerEmail"
+        type="email"
+        autocomplete="username"
+        placeholder="Your email address"
+      >
+    </label>
+
+    <label>
+      Password
+
+      <input
+        id="ownerPassword"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Your password"
+      >
+    </label>
+
+    <div class="editor-actions">
+
+      <button
+        type="button"
+        id="ownerSignInBtn"
+      >
+        Sign In
+      </button>
+
+    </div>
+
+    <p
+      id="ownerLoginStatus"
+      class="editor-status"
+      role="status"
+    ></p>
+
+  </div>
+</section>
+    
     <!-- EDITOR -->
 
     <section

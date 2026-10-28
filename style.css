@@ -1043,3 +1043,120 @@ body {
   }
 
 }
+
+/* =========================
+   OWNER-ONLY CONTROLS
+   ========================= */
+
+.owner-controls {
+  position: absolute;
+  top: -48px;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  z-index: 120;
+}
+
+.owner-controls .write-button {
+  position: static;
+}
+
+.owner-login-button {
+  border: 1px solid rgba(255,255,255,.14);
+
+  background: rgba(255,255,255,.07);
+  color: #eee6d7;
+
+  padding: 10px 17px;
+  border-radius: 999px;
+
+  font-family: "Libre Baskerville", serif;
+  font-size: 13px;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.owner-login-button:hover {
+  background: rgba(255,255,255,.13);
+}
+
+.owner-login {
+  position: fixed;
+  inset: 0;
+
+  z-index: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20,15,11,.82);
+  backdrop-filter: blur(7px);
+}
+
+.owner-login.hidden {
+  display: none;
+}
+
+.owner-login-paper {
+  position: relative;
+
+  width: min(480px, 100%);
+
+  padding: 45px 35px 30px;
+
+  background: var(--paper);
+  color: var(--ink);
+
+  border-radius: 7px;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+}
+
+.owner-login-paper label {
+  display: block;
+  margin-top: 20px;
+
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.owner-login-paper input {
+  display: block;
+
+  width: 100%;
+  margin-top: 7px;
+  padding: 11px 4px;
+
+  border: 0;
+  border-bottom: 1px solid var(--line);
+
+  outline: none;
+
+  background: transparent;
+  color: var(--ink);
+
+  font-family: "Caveat", cursive;
+  font-size: 22px;
+}
+
+@media (max-width: 800px) {
+  .owner-controls {
+    top: -55px;
+  }
+
+  .owner-controls .write-button {
+    position: static;
+  }
+
+  .owner-login-button {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+}
